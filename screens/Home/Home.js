@@ -13,7 +13,7 @@ import {
 import { useAPI } from '../../contexts/MyContext'
 import styles from './Home.style'
 
-const Home = () => {
+const Home = ({ navigation }) => {
 	const { data: _data, error, loading, fetchData, handleLoadMore } = useAPI()
 	const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -25,14 +25,21 @@ const Home = () => {
 	}, [])
 
 	const handlePress = (item) => {
-		navigation.navigate('ContentScreen', { content: item.content })
+		navigation.navigate('Blog', { content: item.content })
 	}
 
 	const renderData = ({ item }) => {
 		return (
-			<Pressable style={styles.cardContainer}>
+			<Pressable
+				style={styles.cardContainer}
+				onPress={() => handlePress(item)}
+			>
 				<Image source={{ uri: item.banner }} style={styles.image} />
-				<Text>xd</Text>
+				<Text style={styles.title}>{item.title}</Text>
+				<Text style={styles.summary}>{item.summary}</Text>
+				<Text style={styles.readingTime}>
+					Reading time: {item.totalReadingTime} minutes
+				</Text>
 			</Pressable>
 		)
 	}

@@ -1,14 +1,28 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+import { View, SafeAreaView } from 'react-native'
+import { WebView } from 'react-native-webview'
 
-import style from './Blog.style'
+import styles from './Blog.style'
 
-const Blog = () => {
-  return (
-    <View>
-      <Text>Blog</Text>
-    </View>
-  )
+const Blog = ({ route }) => {
+	const { content } = route.params
+
+	const injectedJavaScript = `
+    var styleElement = document.createElement('style');
+    styleElement.innerHTML = \`${styles.webViewStyle}\`;
+    document.head.appendChild(styleElement);
+  `
+
+	return (
+		<SafeAreaView style={styles.container}>
+			<View style={styles.webViewContainer}>
+				<WebView
+					injectedJavaScript={injectedJavaScript}
+					source={{ html: content }}
+				/>
+			</View>
+		</SafeAreaView>
+	)
 }
 
 export default Blog

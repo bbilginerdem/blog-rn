@@ -11,8 +11,30 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	cardContainer: { justifyContent: 'center', alignItems: 'center' },
+	cardContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'column',
+	},
 	image: { width: imageWidth, height: imageHeight },
+	title: {
+		paddingTop: 5,
+		paddingBottom: 5,
+		paddingLeft: 45,
+		paddingRight: 45,
+		textAlign: 'center',
+		fontWeight: 'bold',
+	},
+	summary: {
+		paddingLeft: 45,
+		paddingRight: 45,
+	},
+	readingTime: {
+		paddingTop: 8,
+		paddingBottom: 30,
+		paddingLeft: 45,
+		paddingRight: 45,
+	},
 	activityIndicator: {
 		justifyContent: 'center',
 		alignItems: 'center',
