@@ -3,27 +3,37 @@ import { useEffect, useState } from 'react'
 const useFetch = () => {
 	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState(null)
+  const [error, setError] = useState(null)
+  const [isError, setIsError] = useState(false)
+  const [page, setPage] = useState(1)
 
-	const fetchData = async () => {
+  const fetchData = async () => {
 		try {
 			const response = await fetch(
-				'https://www.lenasoftware.com/api/v1/en/maestro/1?page={currentPage}',
+				`https://www.lenasoftware.com/api/v1/en/maestro/1?page=${page}&count=10`,
 			)
-			const data = await response.json()
-			setData(data)
+			const result = await response.json()
+
+			setData((prevData) => [...prevData, ...result.result])
 		} catch (error) {
 			setError(error)
+			setIsError(true)
 		} finally {
 			setLoading(false)
 		}
-	}
+  }
 
-	useEffect(() => {
+  useEffect(() => {
 		fetchData()
-	}, [])
+  }, [page])
 
-	return { data, loading, error, fetchData }
+  const handleLoadMore = () => {
+		if (!loading && !error) {
+			setPage((prevPage) => prevPage + 1)
+		}
+  }
+
+  return { data, loading, error, fetchData, handleLoadMore }
 }
 
 export default useFetch

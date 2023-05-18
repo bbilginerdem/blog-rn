@@ -4,10 +4,12 @@ import useFetch from '../hooks/useFetch'
 const APIContext = createContext()
 
 function APIContextProvider({ children }) {
-	const { data, error, loading, fetchData } = useFetch()
+	const { data, error, loading, fetchData, handleLoadMore } = useFetch()
 
 	return (
-		<APIContext.Provider value={{ data, error, loading, fetchData }}>
+		<APIContext.Provider
+			value={{ data, error, loading, fetchData, handleLoadMore }}
+		>
 			{children}
 		</APIContext.Provider>
 	)

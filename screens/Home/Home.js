@@ -13,10 +13,10 @@ import { useAPI } from '../../contexts/MyContext'
 import styles from './Home.style'
 
 const Home = () => {
-	const { data: _data, error, loading, fetchData } = useAPI()
+	const { data: _data, error, loading, fetchData, handleLoadMore } = useAPI()
 	const [isRefreshing, setIsRefreshing] = useState(false)
-
-	const data = _data.result || []
+  
+	const data = _data || []
 
 	const onRefresh = useCallback(() => {
 		setIsRefreshing(true)
@@ -32,6 +32,18 @@ const Home = () => {
 		)
 	}
 
+	const renderFooter = () => {
+		if (loading) {
+			return (
+				<View style={styles.loaderContainer}>
+					<ActivityIndicator size="small" color="gray" />
+				</View>
+			)
+		}
+
+		return null
+	}
+
 	if (loading) {
 		return (
 			<ActivityIndicator
@@ -42,10 +54,9 @@ const Home = () => {
 		)
 	}
 
-  if (error) {
-		console.log(error)
+	if (error) {
 		return <Text>Error occurred.</Text>
-  }
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -62,6 +73,9 @@ const Home = () => {
 				scrollVelocityThreshold={1000}
 				decelerationRate={0.9}
 				extraScrollHeight={100}
+				onEndReached={handleLoadMore}
+				onEndReachedThreshold={0.5}
+				ListFooterComponent={renderFooter}
 			/>
 		</SafeAreaView>
 	)
