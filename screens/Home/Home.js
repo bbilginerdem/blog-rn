@@ -42,17 +42,13 @@ const Home = () => {
 		)
 	}
 
-	// const handleScroll = () => {
-	// 	if (data.length === 0) {
-	// 		return
-	// 	}
-	// }
+	if (error) {
+		return <Text>{error}</Text>
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<FlatList
-				// onScroll={handleScroll}
-				// contentContainerStyle={styles.scrollView}
 				refreshControl={
 					<RefreshControl
 						refreshing={isRefreshing}
