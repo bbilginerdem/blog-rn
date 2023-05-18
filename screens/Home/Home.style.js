@@ -11,7 +11,7 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	imageContainer: { justifyContent: 'center', alignItems: 'center' },
+	cardContainer: { justifyContent: 'center', alignItems: 'center' },
 	image: { width: imageWidth, height: imageHeight },
 	activityIndicator: {
 		justifyContent: 'center',

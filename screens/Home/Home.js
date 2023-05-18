@@ -7,6 +7,7 @@ import {
 	FlatList,
 	Image,
 	ActivityIndicator,
+	Pressable,
 } from 'react-native'
 
 import { useAPI } from '../../contexts/MyContext'
@@ -15,7 +16,7 @@ import styles from './Home.style'
 const Home = () => {
 	const { data: _data, error, loading, fetchData, handleLoadMore } = useAPI()
 	const [isRefreshing, setIsRefreshing] = useState(false)
-  
+
 	const data = _data || []
 
 	const onRefresh = useCallback(() => {
@@ -23,12 +24,16 @@ const Home = () => {
 		fetchData().then(() => setIsRefreshing(false))
 	}, [])
 
+	const handlePress = (item) => {
+		navigation.navigate('ContentScreen', { content: item.content })
+	}
+
 	const renderData = ({ item }) => {
 		return (
-			<View style={styles.imageContainer}>
+			<Pressable style={styles.cardContainer}>
 				<Image source={{ uri: item.banner }} style={styles.image} />
-				<Text></Text>
-			</View>
+				<Text>xd</Text>
+			</Pressable>
 		)
 	}
 
