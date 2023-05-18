@@ -1,60 +1,70 @@
+import React, { useCallback, useState } from 'react'
 import {
 	View,
 	Text,
 	SafeAreaView,
-	ScrollView,
 	RefreshControl,
 	FlatList,
+	Image,
+	ActivityIndicator,
 } from 'react-native'
-import React from 'react'
 
 import { useAPI } from '../../contexts/MyContext'
 import styles from './Home.style'
 
 const Home = () => {
-	const { data, error, loading } = useAPI()
+	const { data: _data, error, loading, fetchData } = useAPI()
+	const [isRefreshing, setIsRefreshing] = useState(false)
 
-	const [currentPage, setCurrentPage] = React.useState(1)
-	const [refreshing, setRefreshing] = React.useState(false)
+	const data = _data.result || []
 
-	const onRefresh = React.useCallback(() => {
-		setRefreshing(true)
-		setTimeout(() => {
-			setRefreshing(false)
-		}, 2000)
+	const onRefresh = useCallback(() => {
+		setIsRefreshing(true)
+		fetchData().then(() => setIsRefreshing(false))
 	}, [])
 
-	const renderData = () => {
-		return data.map((item) => {
-			return (
-				<View key={item.id}>
-					<Text>{item.title}</Text>
-					<Text>{item.body}</Text>
-				</View>
-			)
-		})
+	const renderData = ({ item }) => {
+		return (
+			<View style={styles.imageContainer}>
+				<Image source={{ uri: item.banner }} style={styles.image} />
+				<Text></Text>
+			</View>
+		)
 	}
 
-	const handleScroll = () => {
-		if (data.length === 0) {
-			return
-		}
+	if (loading) {
+		return (
+			<ActivityIndicator
+				size="large"
+				color="#608DC4"
+				style={styles.activityIndicator}
+			/>
+		)
 	}
+
+	// const handleScroll = () => {
+	// 	if (data.length === 0) {
+	// 		return
+	// 	}
+	// }
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<FlatList
-				onScroll={handleScroll}
-				contentContainerStyle={styles.scrollView}
+				// onScroll={handleScroll}
+				// contentContainerStyle={styles.scrollView}
 				refreshControl={
 					<RefreshControl
-						refreshing={refreshing}
+						refreshing={isRefreshing}
 						onRefresh={onRefresh}
 					/>
 				}
 				data={data}
-				keyExtractor={(item) => item.id}
+				keyExtractor={(item) => item.postId}
 				renderItem={renderData}
+				scrollVelocityThreshold={1000}
+				decelerationRate={0.9}
+				extraScrollHeight={100}
 			/>
 		</SafeAreaView>
 	)
