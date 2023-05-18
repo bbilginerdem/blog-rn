@@ -42,9 +42,10 @@ const Home = () => {
 		)
 	}
 
-	if (error) {
-		return <Text>{error}</Text>
-	}
+  if (error) {
+		console.log(error)
+		return <Text>Error occurred.</Text>
+  }
 
 	return (
 		<SafeAreaView style={styles.container}>
