@@ -8,7 +8,7 @@ const useFetch = () => {
 	const fetchData = async () => {
 		try {
 			const response = await fetch(
-				'https://www.lenasoftware.com/api/v1/en/maestro/1',
+				'https://www.lenasoftware.com/api/v1/en/maestro/1?page={currentPage}',
 			)
 			const data = await response.json()
 			setData(data)

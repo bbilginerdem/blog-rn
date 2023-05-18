@@ -4,6 +4,7 @@ import {
 	SafeAreaView,
 	ScrollView,
 	RefreshControl,
+	FlatList,
 } from 'react-native'
 import React from 'react'
 
@@ -12,8 +13,10 @@ import styles from './Home.style'
 
 const Home = () => {
 	const { data, error, loading } = useAPI()
+
+	const [currentPage, setCurrentPage] = React.useState(1)
 	const [refreshing, setRefreshing] = React.useState(false)
-	console.log(data)
+
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true)
 		setTimeout(() => {
@@ -21,9 +24,27 @@ const Home = () => {
 		}, 2000)
 	}, [])
 
+	const renderData = () => {
+		return data.map((item) => {
+			return (
+				<View key={item.id}>
+					<Text>{item.title}</Text>
+					<Text>{item.body}</Text>
+				</View>
+			)
+		})
+	}
+
+	const handleScroll = () => {
+		if (data.length === 0) {
+			return
+		}
+	}
+
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView
+			<FlatList
+				onScroll={handleScroll}
 				contentContainerStyle={styles.scrollView}
 				refreshControl={
 					<RefreshControl
@@ -31,9 +52,10 @@ const Home = () => {
 						onRefresh={onRefresh}
 					/>
 				}
-			>
-				<Text>Pull down to see RefreshControl indicator</Text>
-			</ScrollView>
+				data={data}
+				keyExtractor={(item) => item.id}
+				renderItem={renderData}
+			/>
 		</SafeAreaView>
 	)
 }
